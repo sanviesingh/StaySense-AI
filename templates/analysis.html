@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-{% block content %}
-<section class="page protected-page"><h1>Review Analysis</h1><form id="reviewForm"><textarea id="review" rows="5" placeholder="Write a guest review..."></textarea><br><button class="btn" type="submit">Analyze & Save</button></form><div id="result"></div></section>
-{% endblock %}
-{% block scripts %}<script>
-const backendUrl = localStorage.getItem('backendUrl') || 'https://your-app-backend.herokuapp.com';
-(async()=>{const token=localStorage.getItem('access_token');if(!token){location.href='/login';return;}const r=await fetch(`${backendUrl}/api/auth/me`,{headers:{Authorization:'Bearer '+token}});if(!r.ok){localStorage.removeItem('access_token');location.href='/login';}})();
-document.getElementById('reviewForm').addEventListener('submit',async(e)=>{e.preventDefault();const token=localStorage.getItem('access_token');const r=await fetch(`${backendUrl}/api/reviews`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token},body:JSON.stringify({review:review.value})});const d=await r.json();document.getElementById('result').innerHTML=r.ok?`<div class="result"><h2>${d.review.sentiment}</h2><p>Theme: ${d.review.theme}</p></div>`:`<p class="error">${d.error}</p>`;});
-</script>{% endblock %}
