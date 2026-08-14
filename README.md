@@ -1,15 +1,12 @@
 # StaySense AI
 
-## Project Title + One-line Description
+## Project Title 
 StaySense AI — An AI-powered guest review analysis platform for understanding customer feedback.
 
 Intern ID: TBI-26100053
 
-## Live Demo
-[ENTER LIVE VERCEL URL]
-
 ## GitHub Repository
-[ENTER GITHUB REPOSITORY URL]
+https://github.com/sanviesingh/StaySense-AI
 
 ## Features
 - Guest review analysis
