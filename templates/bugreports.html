@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>StaySense AI - Bug Reports</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="bug-page">
+    <nav class="site-header">
+        <div class="site-brand">
+            <div class="site-title">StaySense AI</div>
+            <div class="site-nav">
+                <a href="/">Home</a>
+                <a href="/analysis">Analysis</a>
+                <a href="/personal-dashboard">Dashboard</a>
+                <a href="/about">About</a>
+                <a href="/bugreports" class="active">Bug Reports</a>
+            </div>
+        </div>
+        <div class="site-actions">
+            <a href="/login" class="button solid">Login</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Submitted Bug Reports</h1>
+        <p>Review the bugs submitted by users and prioritize fixes.</p>
+    </section>
+
+    <section class="cards">
+        <div class="card">
+            <h2>Total Reports</h2>
+            <p>{{ reports|length }}</p>
+        </div>
+    </section>
+
+    <section class="cards">
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for report in reports %}
+                    <tr>
+                        <td>{{ report[0] }}</td>
+                        <td>{{ report[1] }}</td>
+                        <td>{{ report[2] }}</td>
+                        <td>{{ report[3] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <p>StaySense AI — guest review analytics for homestay teams.</p>
+    </footer>
+</body>
+</html>

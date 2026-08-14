@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth-card"><h1>Create Account</h1><form id="registerForm"><input id="email" type="email" placeholder="Email" required><input id="password" type="password" placeholder="Password (8+ characters)" minlength="8" required><button class="btn" type="submit">Register</button></form><div id="message"></div><p>Already registered? <a class="dark-link" href="/login">Login</a></p></section>
+{% endblock %}
+{% block scripts %}<script>
+const backendUrl = localStorage.getItem('backendUrl') || 'https://your-app-backend.herokuapp.com';
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const message = document.getElementById('message');
+  const res = await fetch(`${backendUrl}/api/auth/register`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:email.value,password:password.value})});
+  const data = await res.json();
+  message.textContent = data.message || data.error;
+  message.className = res.ok ? 'success' : 'error';
+  if(res.ok) setTimeout(()=>location.href='/login',800);
+});
+</script>{% endblock %}

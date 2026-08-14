@@ -1,0 +1,63 @@
+{
+  "info": {
+    "_postman_id": "7a4b0d7f-4f2d-4e6b-9e1a-staysense-w6",
+    "name": "StaySense AI - Week 6 Auth API",
+    "description": "Week 6 authentication, JWT, protected review APIs and search. Replace InternID in the filename before submission if required.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key":"baseUrl","value":"http://127.0.0.1:5000"},
+    {"key":"email","value":"student@example.com"},
+    {"key":"password","value":"Password123!"},
+    {"key":"jwt","value":""},
+    {"key":"reviewId","value":"1"}
+  ],
+  "item": [
+    {
+      "name":"Register User",
+      "request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"},"url":{"raw":"{{baseUrl}}/api/auth/register","host":["{{baseUrl}}"],"path":["api","auth","register"]}},
+      "response":[{"name":"201 Success","originalRequest":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"email\":\"student@example.com\",\"password\":\"Password123!\"}"},"url":"http://127.0.0.1:5000/api/auth/register"},"status":"Created","code":201,"body":"{\"success\":true,\"message\":\"Registration successful.\",\"user\":{\"id\":1,\"email\":\"student@example.com\"}}"}]
+    },
+    {
+      "name":"Login - Save JWT",
+      "event":[{"listen":"test","script":{"exec":["pm.test('Status is 200', function () { pm.response.to.have.status(200); });","const json = pm.response.json();","if (json.access_token) pm.collectionVariables.set('jwt', json.access_token);"]}}],
+      "request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"},"url":{"raw":"{{baseUrl}}/api/auth/login","host":["{{baseUrl}}"],"path":["api","auth","login"]}},
+      "response":[{"name":"200 Success with JWT","originalRequest":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"email\":\"student@example.com\",\"password\":\"Password123!\"}"},"url":"http://127.0.0.1:5000/api/auth/login"},"status":"OK","code":200,"body":"{\"success\":true,\"message\":\"Login successful.\",\"access_token\":\"<JWT_TOKEN>\",\"token_type\":\"Bearer\",\"expires_in_days\":7,\"user\":{\"id\":1,\"email\":\"student@example.com\"}}"}]
+    },
+    {
+      "name":"Get Current User - Protected",
+      "request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{jwt}}"}],"url":{"raw":"{{baseUrl}}/api/auth/me","host":["{{baseUrl}}"],"path":["api","auth","me"]}},
+      "response":[{"name":"200 Protected","status":"OK","code":200,"body":"{\"success\":true,\"user\":{\"id\":1,\"email\":\"student@example.com\",\"created_at\":\"2026-08-14 09:30:00\"}}"}]
+    },
+    {
+      "name":"Create Review - Protected",
+      "request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{jwt}}"}],"body":{"mode":"raw","raw":"{\n  \"review\": \"The food was great and the room was clean.\"\n}"},"url":{"raw":"{{baseUrl}}/api/reviews","host":["{{baseUrl}}"],"path":["api","reviews"]}},
+      "response":[{"name":"201 Created","status":"Created","code":201,"body":"{\"success\":true,\"message\":\"Review created.\",\"review\":{\"id\":1,\"user_id\":1,\"review\":\"The food was great and the room was clean.\",\"sentiment\":\"Positive\",\"theme\":\"Food\"}}"}]
+    },
+    {
+      "name":"List Reviews - Protected",
+      "request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{jwt}}"}],"url":{"raw":"{{baseUrl}}/api/reviews","host":["{{baseUrl}}"],"path":["api","reviews"]}},
+      "response":[{"name":"200 List","status":"OK","code":200,"body":"{\"success\":true,\"count\":1,\"reviews\":[{\"id\":1,\"user_id\":1,\"review\":\"The food was great and the room was clean.\",\"sentiment\":\"Positive\",\"theme\":\"Food\"}]}"}]
+    },
+    {
+      "name":"Update Review - Protected",
+      "request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{jwt}}"}],"body":{"mode":"raw","raw":"{\n  \"review\": \"The food was excellent but the location was noisy.\"\n}"},"url":{"raw":"{{baseUrl}}/api/reviews/{{reviewId}}","host":["{{baseUrl}}"],"path":["api","reviews", "{{reviewId}}"]}},
+      "response":[{"name":"200 Updated","status":"OK","code":200,"body":"{\"success\":true,\"message\":\"Review updated.\",\"review\":{\"id\":1,\"review\":\"The food was excellent but the location was noisy.\",\"sentiment\":\"Positive\",\"theme\":\"Food\"}}"}]
+    },
+    {
+      "name":"Delete Review - Protected",
+      "request":{"method":"DELETE","header":[{"key":"Authorization","value":"Bearer {{jwt}}"}],"url":{"raw":"{{baseUrl}}/api/reviews/{{reviewId}}","host":["{{baseUrl}}"],"path":["api","reviews", "{{reviewId}}"]}},
+      "response":[{"name":"200 Deleted","status":"OK","code":200,"body":"{\"success\":true,\"message\":\"Review deleted.\"}"}]
+    },
+    {
+      "name":"Search Reviews - Protected",
+      "request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{jwt}}"}],"url":{"raw":"{{baseUrl}}/api/reviews/search?q=food","host":["{{baseUrl}}"],"path":["api","reviews","search"],"query":[{"key":"q","value":"food"}]}},
+      "response":[{"name":"200 Search","status":"OK","code":200,"body":"{\"success\":true,\"query\":\"food\",\"count\":1,\"reviews\":[{\"id\":1,\"theme\":\"Food\"}]}"}]
+    },
+    {
+      "name":"Logout - Revoke JWT",
+      "request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{jwt}}"}],"url":{"raw":"{{baseUrl}}/api/auth/logout","host":["{{baseUrl}}"],"path":["api","auth","logout"]}},
+      "response":[{"name":"200 Logout","status":"OK","code":200,"body":"{\"success\":true,\"message\":\"Logged out successfully.\"}"}]
+    }
+  ]
+}
