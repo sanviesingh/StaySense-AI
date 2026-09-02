@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="auth-card"><h1>Create Account</h1><form id="registerForm"><input id="email" type="email" placeholder="Email" required><input id="password" type="password" placeholder="Password (8+ characters)" minlength="8" required><button class="btn" type="submit">Register</button></form><div id="message"></div><p>Already registered? <a class="dark-link" href="/login">Login</a></p></section>
+<section class="auth-card"><span class="eyebrow">WELCOME TO STAYSENSE</span><h1>Create Account</h1><p class="form-intro">Build your personal guest feedback intelligence workspace.</p><form id="registerForm"><input id="email" type="email" placeholder="Email" required><input id="password" type="password" placeholder="Password (8+ characters)" minlength="8" required><button class="btn" type="submit">Register <span>↗</span></button></form><div id="message"></div><div class="auth-divider"><span>or continue with</span></div><div class="oauth"><a class="oauth-btn" href="/auth/google"><span class="oauth-icon">G</span> Google</a><a class="oauth-btn" href="/auth/github"><span class="oauth-icon">●</span> GitHub</a></div><p>Already registered? <a class="dark-link" href="/login">Login</a></p></section>
 {% endblock %}
 {% block scripts %}<script>
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
