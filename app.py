@@ -21,6 +21,8 @@ from flask_limiter.util import get_remote_address
 
 load_dotenv()
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY", "change-this-secret")
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "change-this-jwt-secret")
@@ -65,7 +67,7 @@ if os.getenv("GITHUB_CLIENT_ID") and os.getenv("GITHUB_CLIENT_SECRET"):
         client_kwargs={"scope": "user:email"},
     )
 
-DB_PATH = "reviews.db"
+DB_PATH = os.getenv("DB_PATH", os.path.join(BASE_DIR, "reviews.db"))
 EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 
 
@@ -449,4 +451,4 @@ def oauth_complete():
 
 if __name__ == "__main__":
     init_db()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=False)

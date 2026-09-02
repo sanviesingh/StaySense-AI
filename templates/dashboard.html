@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="page protected-page"><h1>Protected Dashboard</h1><p id="userInfo">Loading account...</p><button class="btn" onclick="logout()">Logout</button><div id="reviews" class="review-list"></div></section>
+{% endblock %}
+{% block scripts %}<script>
+(async()=>{const token=localStorage.getItem('access_token');if(!token){location.href='/login';return;}const r=await fetch('/api/auth/me',{headers:{Authorization:'Bearer '+token}});if(!r.ok){localStorage.removeItem('access_token');location.href='/login';return;}const d=await r.json();document.getElementById('userInfo').textContent='Logged in as '+d.user.email;const rr=await fetch('/api/reviews',{headers:{Authorization:'Bearer '+token}});const rd=await rr.json();document.getElementById('reviews').innerHTML=rd.reviews.map(x=>`<article><b>${x.sentiment}</b> · ${x.theme}<p>${x.review}</p></article>`).join('')||'<p>No reviews yet.</p>';})();
+async function logout(){const token=localStorage.getItem('access_token');if(token) await fetch('/api/auth/logout',{method:'POST',headers:{Authorization:'Bearer '+token}});localStorage.removeItem('access_token');location.href='/login';}
+</script>{% endblock %}
