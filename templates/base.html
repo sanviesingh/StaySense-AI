@@ -8,13 +8,13 @@
 </head>
 <body>
 <nav class="navbar">
-  <a class="brand" href="/">StaySense AI</a>
+  <a class="brand" href="/"><span class="brand-mark">S</span><span>StaySense <em>AI</em></span></a>
   <div class="nav-links">
-    <a href="/">Home</a><a href="/about">About</a><a href="/dashboard">Dashboard</a><a href="/analysis">Analysis</a><a href="/login">Login</a><a href="/register">Register</a>
+    <a href="/">Home</a><a href="/about">About</a><a href="/dashboard">Dashboard</a><a href="/analysis">Analysis</a><a class="nav-cta" href="/register">Get started <span>↗</span></a>
   </div>
 </nav>
 <main>{% block content %}{% endblock %}</main>
-<footer>© 2026 StaySense AI · AI-assisted guest review analytics</footer>
+<footer class="site-footer"><div class="footer-inner"><div><a class="brand footer-brand" href="/"><span class="brand-mark">S</span><span>StaySense <em>AI</em></span></a><p>Sharper signals from every guest voice.</p></div><div class="footer-links"><a href="/about">About</a><a href="/analysis">Analysis</a><a href="/register">Create account</a></div><p class="copyright">© 2026 StaySense AI</p></div></footer>
 <script src="{{ url_for('static', filename='app.js') }}"></script>
 {% block scripts %}{% endblock %}
 </body>
