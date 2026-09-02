@@ -107,6 +107,9 @@ def init_db():
     conn.close()
 
 
+init_db()
+
+
 def validate_credentials(email, password):
     errors = {}
     if not email or not EMAIL_RE.match(email):
